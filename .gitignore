@@ -1,0 +1,18 @@
+# Zig build artifacts
+.zig-cache/
+zig-out/
+build.zig.zon.lock
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating system specific files
+.DS_Store
+Thumbs.db
+
+# Dependencies (if managed outside of zig-cache)
+# For example, if you use a package manager that places dependencies in a specific directory
+# deps/
