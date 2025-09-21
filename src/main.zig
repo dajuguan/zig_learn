@@ -1,27 +1,27 @@
 const std = @import("std");
-const zig_learn = @import("zig_learn");
 
-pub fn main() !void {
-    // Prints to stderr, ignoring potential errors.
-    std.debug.print("Hello world!\n", .{});
-    try zig_learn.bufferedPrint();
+fn callPrint(value: anytype) void {
+    value.print(); // must exist, checked at compile-time
 }
 
-test "simple test" {
-    const gpa = std.testing.allocator;
-    var list: std.ArrayList(i32) = .empty;
-    defer list.deinit(gpa); // Try commenting this out and see if zig detects the memory leak!
-    try list.append(gpa, 42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
-}
+const A = struct {
+    x: i32,
+    pub fn print(self: A) void {
+        std.debug.print("A: {any}\n", .{self.x});
+    }
+};
 
-test "fuzz example" {
-    const Context = struct {
-        fn testOne(context: @This(), input: []const u8) anyerror!void {
-            _ = context;
-            // Try passing `--fuzz` to `zig build test` and see if it manages to fail this test case!
-            try std.testing.expect(!std.mem.eql(u8, "canyoufindme", input));
-        }
-    };
-    try std.testing.fuzz(Context{}, Context.testOne, .{});
+const B = struct {
+    msg: []const u8,
+    pub fn print(self: *B) void {
+        std.debug.print("B: {any}\n", .{self.msg});
+    }
+};
+
+pub fn main() void {
+    const a = A{ .x = 123 };
+    callPrint(a);
+
+    var b = B{ .msg = "hello" };
+    callPrint(&b);
 }

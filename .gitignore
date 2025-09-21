@@ -16,3 +16,4 @@ Thumbs.db
 # Dependencies (if managed outside of zig-cache)
 # For example, if you use a package manager that places dependencies in a specific directory
 # deps/
+main
